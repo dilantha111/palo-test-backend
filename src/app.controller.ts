@@ -8,7 +8,12 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/forecast')
-  async getForecast(@Req() request: Request): Promise<ForeCastItem[]> {
-    return this.appService.getForecast(request.query.date_time as string);
+  async getForecast(
+    @Req() request: Request,
+  ): Promise<{ forecast: ForeCastItem[] }> {
+    const forecast = await this.appService.getForecast(
+      request.query.date_time as string,
+    );
+    return { forecast };
   }
 }
