@@ -1,7 +1,7 @@
-import { Controller, Get, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ForeCastItem } from './types/ForeCastItem.type';
+import { GetForecastQuery } from './validation/getForecastQuery';
 
 @Controller()
 export class AppController {
@@ -9,11 +9,9 @@ export class AppController {
 
   @Get('/forecast')
   async getForecast(
-    @Req() request: Request,
+    @Query() queryParams: GetForecastQuery,
   ): Promise<{ forecast: ForeCastItem[] }> {
-    const forecast = await this.appService.getForecast(
-      request.query.date_time as string,
-    );
+    const forecast = await this.appService.getForecast(queryParams.date_time);
     return { forecast };
   }
 }
